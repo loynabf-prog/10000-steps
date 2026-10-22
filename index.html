@@ -14,7 +14,7 @@
 <link rel="icon" href="icon.png">
 <link rel="manifest" href="manifest.json">
 <style>
-/* Layout: iOS-style grouped list on a grey ground. One big ring for you, compact rows for friends. */
+/* iOS grouped-list look: grey ground, white cards, one big ring for you, friends as rows with avatars. */
 :root{
   --bg:#f2f2f7; --card:#ffffff; --fg:#000000; --fg2:#3c3c43; --fg3:rgba(60,60,67,.6); --sep:rgba(60,60,67,.18);
   --fill:#e5e5ea; --blue:#007aff; --green:#34c759; --red:#ff3b30; --orange:#ff9500; --ring-track:#e9e9ee;
@@ -36,22 +36,29 @@ h1{font-size:34px;font-weight:800;letter-spacing:-.4px;margin:18px 0 2px}
 .sub{color:var(--fg3);font-size:15px;margin:0 0 18px}
 .section-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--fg3);margin:26px 0 8px 16px;font-weight:600}
 .card{background:var(--card);border-radius:20px;overflow:hidden}
-.row{display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:60px}
-.row+.row{border-top:.5px solid var(--sep);}
+.row{display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:66px}
+.row+.row{border-top:.5px solid var(--sep)}
 .row .name{font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .row .meta{font-size:13px;color:var(--fg3);display:block;font-weight:400;margin-top:1px}
 .row .steps{font-variant-numeric:tabular-nums;font-weight:600;font-size:17px;text-align:right}
 .row .steps small{display:block;font-size:12px;color:var(--fg3);font-weight:500}
-.pill{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff;letter-spacing:.02em}
-.pill.ok{background:var(--green)} .pill.no{background:var(--red)} .pill.stale{background:var(--orange)}
+.pill{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff;letter-spacing:.02em;flex:none}
+.pill.ok{background:var(--green)} .pill.no{background:var(--red)}
+.avatar{width:46px;height:46px;border-radius:50%;background:var(--fill);flex:none;display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:var(--fg3);font-size:18px;overflow:hidden;position:relative}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.ok{box-shadow:0 0 0 3px var(--card),0 0 0 5.5px var(--green)}
+.avatar.no{box-shadow:0 0 0 3px var(--card),0 0 0 5.5px var(--red)}
 .hero{padding:26px 16px 22px;text-align:center}
-.ring{position:relative;width:190px;height:190px;margin:0 auto 12px}
+.ring{position:relative;width:200px;height:200px;margin:0 auto 14px}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ring .track{fill:none;stroke:var(--ring-track);stroke-width:18}
-.ring .bar{fill:none;stroke:var(--green);stroke-width:18;stroke-linecap:round;transition:stroke-dashoffset .9s cubic-bezier(.3,.9,.3,1)}
-.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring .num b{font-size:40px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1}
-.ring .num span{font-size:13px;color:var(--fg3);margin-top:6px;font-weight:500}
+.ring .track{fill:none;stroke:var(--ring-track);stroke-width:16}
+.ring .bar{fill:none;stroke-width:16;stroke-linecap:round;transition:stroke-dashoffset .9s cubic-bezier(.3,.9,.3,1)}
+.ring .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.ring .inner .av{width:56px;height:56px;border-radius:50%;overflow:hidden;background:var(--fill);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--fg3);font-size:22px}
+.ring .inner .av img{width:100%;height:100%;object-fit:cover}
+.ring .inner b{font-size:34px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;line-height:1}
+.ring .inner span{font-size:12px;color:var(--fg3);font-weight:500}
 .status{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:19px;margin-top:4px}
 .status .dot{width:12px;height:12px;border-radius:50%;background:var(--red)}
 .status.ok .dot{background:var(--green)}
@@ -60,24 +67,20 @@ h1{font-size:34px;font-weight:800;letter-spacing:-.4px;margin:18px 0 2px}
   font:inherit;font-weight:600;font-size:17px;cursor:pointer;background:var(--blue);color:#fff}
 .btn.sec{background:var(--fill);color:var(--blue)}
 .btn.plain{background:transparent;color:var(--blue);padding:12px}
+.btn.danger{background:transparent;color:var(--red);padding:12px}
 .btn:active{opacity:.7}
 .btn[disabled]{opacity:.5}
 .stack{display:flex;flex-direction:column;gap:10px}
-input{width:100%;font:inherit;font-size:17px;padding:14px 16px;border:0;background:var(--card);color:var(--fg);border-radius:0;outline:0}
+input[type=text]{width:100%;font:inherit;font-size:17px;padding:14px 16px;border:0;background:var(--card);color:var(--fg);border-radius:0;outline:0}
 input::placeholder{color:var(--fg3)}
-.field+.field{border-top:.5px solid var(--sep)}
 .hint{font-size:13px;color:var(--fg3);margin:8px 16px 0}
-.mini{width:34px;height:34px;flex:none}
-.mini svg{width:34px;height:34px;transform:rotate(-90deg)}
-.mini .track{fill:none;stroke:var(--ring-track);stroke-width:26}
-.mini .bar{fill:none;stroke-width:26;stroke-linecap:round}
 .days{display:flex;gap:4px;margin-top:4px}
 .days i{width:8px;height:8px;border-radius:50%;background:var(--fill);display:block}
 .days i.ok{background:var(--green)} .days i.no{background:var(--red)}
 .center{text-align:center}
 .toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);
   background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:600;font-size:15px;opacity:0;
-  transition:all .25s;pointer-events:none;white-space:nowrap;z-index:50}
+  transition:all .25s;pointer-events:none;white-space:nowrap;z-index:50;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
 .toast.show{opacity:1;transform:translateX(-50%)}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
 .nav button{background:none;border:0;color:var(--blue);font:inherit;font-size:17px;padding:8px 0;cursor:pointer}
@@ -93,9 +96,21 @@ input::placeholder{color:var(--fg3)}
 .empty{padding:28px 16px;text-align:center;color:var(--fg3);font-size:15px}
 .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.hidden{display:none!important}
 .chip{display:inline-flex;align-items:center;gap:6px;background:var(--fill);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
 .chip.ok{color:var(--green)} .chip.warn{color:var(--orange)}
+.picker{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 16px 18px}
+.picker .big{width:110px;height:110px;border-radius:50%;background:var(--fill);overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--fg3);font-size:40px;font-weight:700;cursor:pointer;position:relative}
+.picker .big img{width:100%;height:100%;object-fit:cover}
+.picker .big .cam{position:absolute;right:2px;bottom:2px;width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;border:3px solid var(--card)}
+.picker label{color:var(--blue);font-weight:600;font-size:15px;cursor:pointer}
+.picker input[type=file]{display:none}
+.invite-card{padding:20px 16px;text-align:center}
+.invite-card .avatar{width:72px;height:72px;margin:0 auto 10px;font-size:28px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;z-index:40}
+.sheet .box{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:560px;padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet h3{margin:0 0 6px;font-size:20px}
+.sheet p{margin:0 0 16px;color:var(--fg3);font-size:15px}
+.numpad{font:inherit;font-size:28px;font-weight:700;text-align:center;width:100%;padding:12px;border:0;border-radius:12px;background:var(--fill);color:var(--fg);outline:0;font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){.ring .bar{transition:none}}
 </style>
 </head>
@@ -108,13 +123,14 @@ const SUPA_URL = 'https://kxrbeyecsdvejhvxtrin.supabase.co';
 const SUPA_KEY = 'sb_publishable_FD2i1tEYUWO1RAgtOoESiA_VPt3zUOk';
 const SYNC_URL = SUPA_URL + '/functions/v1/steps-sync';
 const GOAL = 10000;
+const APP_URL = location.origin + location.pathname;
 
 const $ = s => document.querySelector(s);
 const app = $('#app');
 const fmt = n => (n||0).toLocaleString('de-DE');
-let me = null, dash = [], hist = [], timer = null, view = 'home';
+let me = null, dash = [], hist = [], view = 'home', pendingFriend = null, draftAvatar = null;
 
-function load(){ try{ me = JSON.parse(localStorage.getItem('steps_me')||'null'); }catch(e){ me=null; } }
+function load(){ try{ me = JSON.parse(localStorage.getItem('steps_me')||'null'); if(me && !me.token) me=null; }catch(e){ me=null; } }
 function save(){ try{ localStorage.setItem('steps_me', JSON.stringify(me)); }catch(e){} }
 
 async function rpc(fn, args){
@@ -125,134 +141,182 @@ async function rpc(fn, args){
   if(!r.ok) throw new Error(await r.text());
   return r.json();
 }
-
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
-
 async function copy(text){
   try{ await navigator.clipboard.writeText(text); toast('Kopiert'); }
   catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy'); toast('Kopiert');}catch(_){ toast('Bitte manuell kopieren'); } ta.remove(); }
 }
-
-/* ---------- time helpers (step day runs 03:00 → 03:00 Europe/Berlin) ---------- */
-function berlinNow(){
-  const p = new Intl.DateTimeFormat('de-DE',{timeZone:'Europe/Berlin',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
-  const h = +p.find(x=>x.type==='hour').value, m=+p.find(x=>x.type==='minute').value;
-  return {h,m};
-}
-function timeLeft(){
-  const {h,m} = berlinNow();
-  let mins = (h<3 ? (3-h)*60 : (27-h)*60) - m;
-  const hh=Math.floor(mins/60), mm=mins%60;
-  return hh>0 ? `${hh} Std. ${mm} Min.` : `${mm} Min.`;
-}
+function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function initials(n){ return esc((n||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase()); }
+function avatarHTML(u, cls=''){ return `<div class="avatar ${cls}">${u.avatar?`<img src="${u.avatar}" alt="">`:initials(u.name)}</div>`; }
 function ago(ts){
-  if(!ts) return 'noch nie synchronisiert';
+  if(!ts) return 'noch nicht verbunden';
   const d=(Date.now()-new Date(ts).getTime())/60000;
   if(d<1) return 'gerade eben'; if(d<60) return `vor ${Math.round(d)} Min.`;
   if(d<48*60) return `vor ${Math.round(d/60)} Std.`; return `vor ${Math.round(d/1440)} Tagen`;
 }
-const isStale = ts => !ts || (Date.now()-new Date(ts).getTime()) > 2*3600e3;
+const isStale = ts => !ts || (Date.now()-new Date(ts).getTime()) > 3*3600e3;
 
-/* ---------- views ---------- */
-function ringSVG(pct, cls, r=80, big=true){
-  const c=2*Math.PI*r, off=c*(1-Math.min(pct,1));
-  return `<svg viewBox="0 0 200 200"><circle class="track" cx="100" cy="100" r="${r}"/><circle class="bar" cx="100" cy="100" r="${r}" style="stroke:${cls};stroke-dasharray:${c};stroke-dashoffset:${big?c:off}" data-off="${off}"/></svg>`;
+/* image → small square JPEG data URL */
+function fileToAvatar(file){
+  return new Promise((res,rej)=>{
+    const img=new Image(); const url=URL.createObjectURL(file);
+    img.onload=()=>{ const S=160, c=document.createElement('canvas'); c.width=c.height=S; const x=c.getContext('2d');
+      const s=Math.min(img.width,img.height); x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,S,S);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg',.82)); };
+    img.onerror=()=>rej(new Error('Bild konnte nicht gelesen werden')); img.src=url;
+  });
 }
 
-function renderJoin(prefillGroup){
+function ringSVG(pct, color, r=84){
+  const c=2*Math.PI*r, off=c*(1-Math.min(pct,1));
+  return `<svg viewBox="0 0 200 200"><circle class="track" cx="100" cy="100" r="${r}"/><circle class="bar" cx="100" cy="100" r="${r}" style="stroke:${color};stroke-dasharray:${c};stroke-dashoffset:${c}" data-off="${off}"/></svg>`;
+}
+function animateRings(){ requestAnimationFrame(()=>requestAnimationFrame(()=>{ document.querySelectorAll('.ring .bar').forEach(b=>b.style.strokeDashoffset=b.dataset.off); })); }
+
+/* ---------- onboarding ---------- */
+function renderJoin(){
   view='join';
   app.innerHTML = `
     <h1>10.000 Steps</h1>
-    <p class="sub">Schaffst du heute 10.000 Schritte? Du und deine Freunde, jeden Tag bis 3 Uhr nachts.</p>
+    <p class="sub">Schaffst du heute 10.000 Schritte? Grün oder rot. Du und deine Freunde.</p>
+    ${pendingFriend ? `<div class="card invite-card" style="margin-bottom:14px">${avatarHTML(pendingFriend)}<b>${esc(pendingFriend.name)}</b><div class="hint" style="margin:4px 0 0">hat dich eingeladen. Leg dein Profil an, dann seid ihr verbunden.</div></div>`:''}
     <div class="card">
-      <div class="field"><input id="name" placeholder="Dein Name" autocomplete="given-name" maxlength="24"></div>
-      <div class="field"><input id="group" placeholder="Gruppencode (z. B. buero)" autocapitalize="none" autocomplete="off" maxlength="24" value="${prefillGroup||''}"></div>
+      <div class="picker">
+        <label for="file"><div class="big" id="bigAv">${draftAvatar?`<img src="${draftAvatar}" alt="">`:'<span id="bigInit">?</span>'}<div class="cam"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div></div></label>
+        <label for="file">Profilbild wählen</label>
+        <input type="file" id="file" accept="image/*">
+      </div>
+      <div style="border-top:.5px solid var(--sep)"><input type="text" id="name" placeholder="Dein Name" autocomplete="given-name" maxlength="24"></div>
     </div>
-    <p class="hint">Gleicher Gruppencode = gleiche Gruppe. Erfinde einen neuen oder nimm den, den du bekommen hast.</p>
-    <div class="stack" style="margin-top:18px">
-      <button class="btn" id="joinBtn">Loslegen</button>
-    </div>`;
+    <div class="stack" style="margin-top:18px"><button class="btn" id="joinBtn">Loslegen</button></div>`;
+  $('#name').addEventListener('input',e=>{ const el=$('#bigInit'); if(el) el.textContent=(e.target.value.trim()[0]||'?').toUpperCase(); });
+  $('#file').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ draftAvatar=await fileToAvatar(f); const cam=$('#bigAv .cam').outerHTML; $('#bigAv').innerHTML=`<img src="${draftAvatar}" alt="">`+cam; }catch(err){ toast(err.message); } };
   $('#joinBtn').onclick = async ()=>{
-    const name=$('#name').value.trim(), group=$('#group').value.trim().toLowerCase().replace(/[^a-z0-9äöü_-]/g,'');
-    if(!name||!group){ toast('Name und Gruppencode eingeben'); return; }
+    const name=$('#name').value.trim();
+    if(!name){ toast('Bitte Namen eingeben'); return; }
     const b=$('#joinBtn'); b.disabled=true; b.innerHTML='<span class="spin"></span>';
-    try{ me = await rpc('steps_join',{p_name:name,p_group_code:group}); save(); history.replaceState(null,'',location.pathname); renderHome(); renderSetup(); }
-    catch(e){ toast('Fehler: '+e.message); b.disabled=false; b.textContent='Loslegen'; }
+    try{
+      me = await rpc('steps_register',{p_name:name,p_avatar:draftAvatar}); save();
+      if(pendingFriend){ await rpc('steps_add_friend',{p_token:me.token,p_friend:pendingFriend.id}); toast(`Mit ${pendingFriend.name} verbunden`); pendingFriend=null; }
+      history.replaceState(null,'',APP_URL);
+      renderSetup();
+    }catch(e){ toast('Fehler: '+e.message); b.disabled=false; b.textContent='Loslegen'; }
   };
 }
 
+/* ---------- data ---------- */
 async function refresh(){
   if(!me) return;
   try{
-    [dash,hist] = await Promise.all([rpc('steps_dashboard',{p_group_code:me.group_code}), rpc('steps_history',{p_group_code:me.group_code})]);
+    [dash,hist] = await Promise.all([rpc('steps_dash',{p_token:me.token}), rpc('steps_hist',{p_token:me.token})]);
+    const mine = dash.find(d=>d.is_me); if(mine){ me.name=mine.name; me.avatar=mine.avatar; me.id=mine.id; save(); }
     if(view==='home') renderHome();
   }catch(e){ console.warn(e); }
 }
-
 function dayDots(userId){
-  const days=[]; const base=new Date(Date.now()-3*3600e3);
+  const days=[]; const base=new Date();
   for(let i=6;i>=1;i--){ const d=new Date(base); d.setDate(d.getDate()-i); days.push(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}).format(d)); }
   return `<div class="days">${days.map(d=>{const r=hist.find(h=>h.user_id===userId&&h.day===d); return `<i class="${r?(r.steps>=GOAL?'ok':'no'):''}"></i>`;}).join('')}</div>`;
 }
 
+/* ---------- home ---------- */
 function renderHome(){
   view='home';
-  const my = dash.find(d=>d.id===me.id) || {steps:0,updated_at:null,goal_reached:false};
-  const pct = my.steps/GOAL;
-  const others = dash.filter(d=>d.id!==me.id);
+  const my = dash.find(d=>d.is_me) || {steps:0,updated_at:null,goal_reached:false,name:me.name,avatar:me.avatar};
+  const others = dash.filter(d=>!d.is_me);
   const stale = isStale(my.updated_at);
   app.innerHTML = `
-    <div class="nav"><span style="font-weight:700;font-size:17px">10.000 Steps</span><button id="setupBtn">Einrichten</button></div>
+    <div class="nav"><span style="font-weight:700;font-size:17px">10.000 Steps</span><button id="profileBtn">Profil</button></div>
     <div class="card hero">
-      <div class="ring">${ringSVG(pct, my.goal_reached?'var(--green)':'var(--red)')}
-        <div class="num"><b>${fmt(my.steps)}</b><span>von ${fmt(GOAL)} Schritten</span></div></div>
+      <div class="ring">${ringSVG(my.steps/GOAL, my.goal_reached?'var(--green)':'var(--red)')}
+        <div class="inner"><div class="av">${my.avatar?`<img src="${my.avatar}" alt="">`:initials(my.name)}</div><b>${fmt(my.steps)}</b><span>von ${fmt(GOAL)}</span></div></div>
       <div class="status ${my.goal_reached?'ok':''}"><span class="dot"></span>${my.goal_reached?'Geschafft!':`Noch ${fmt(GOAL-my.steps)} Schritte`}</div>
-      <div class="meta">${my.goal_reached?'Ziel für heute erreicht':'Noch '+timeLeft()+' bis 3:00 Uhr'}</div>
-      <div style="margin-top:14px">${stale
-        ? `<span class="chip warn">⚠︎ Sync ${ago(my.updated_at)}</span>`
+      <div style="margin-top:12px">${stale
+        ? `<span class="chip warn">⚠︎ ${my.updated_at?'Letzter Sync '+ago(my.updated_at):'Apple Health nicht verbunden'}</span>`
         : `<span class="chip ok">✓ Sync ${ago(my.updated_at)}</span>`}</div>
-      ${dayDots(me.id)}
+      ${dayDots(my.id)}
     </div>
 
-    <div class="section-title">Freunde · ${me.group_code}</div>
+    <div class="section-title">Freunde</div>
     <div class="card">
       ${others.length ? others.map(o=>`
-        <div class="row">
-          <div class="mini">${ringSVG(o.steps/GOAL, o.goal_reached?'var(--green)':'var(--red)', 80, false)}</div>
+        <div class="row" data-id="${o.id}" data-name="${esc(o.name)}">
+          ${avatarHTML(o, o.goal_reached?'ok':'no')}
           <div class="name">${esc(o.name)}<span class="meta">${isStale(o.updated_at)?'⚠︎ ':''}Sync ${ago(o.updated_at)}</span>${dayDots(o.id)}</div>
           <div class="steps">${fmt(o.steps)}<small>${o.goal_reached?'✓ geschafft':'noch '+fmt(GOAL-o.steps)}</small></div>
           <span class="pill ${o.goal_reached?'ok':'no'}">${o.goal_reached?'GRÜN':'ROT'}</span>
         </div>`).join('')
-      : `<div class="empty">Noch niemand hier. Lade Freunde mit dem Gruppencode <b>${esc(me.group_code)}</b> ein.</div>`}
+      : `<div class="empty">Noch keine Freunde. Schick deinen Einladungslink.</div>`}
     </div>
     <div class="stack" style="margin-top:14px">
-      <button class="btn sec" id="inviteBtn">Freunde einladen</button>
+      <button class="btn" id="inviteBtn">Freunde einladen</button>
+      ${stale?`<button class="btn sec" id="setupBtn">Apple Health verbinden</button>`:`<button class="btn plain" id="setupBtn">Sync-Einstellungen</button>`}
       <button class="btn plain" id="manualBtn">Schritte manuell eintragen</button>
-    </div>
-    <p class="hint center" style="margin-top:20px">Hallo ${esc(me.name)} · <a href="#" id="logout" style="color:var(--fg3)">Abmelden</a></p>`;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{ document.querySelectorAll('.ring .bar').forEach(b=>b.style.strokeDashoffset=b.dataset.off); }));
-  $('#setupBtn').onclick=renderSetup;
+    </div>`;
+  animateRings();
+  $('#profileBtn').onclick=renderProfile;
   $('#inviteBtn').onclick=invite;
+  $('#setupBtn').onclick=renderSetup;
   $('#manualBtn').onclick=manual;
-  $('#logout').onclick=e=>{e.preventDefault(); me=null; try{localStorage.removeItem('steps_me')}catch(_){}; renderJoin(); };
+  document.querySelectorAll('.row[data-id]').forEach(r=>{ let t; const start=()=>{t=setTimeout(()=>askRemove(r.dataset.id,r.dataset.name),700)}; const end=()=>clearTimeout(t);
+    r.addEventListener('touchstart',start,{passive:true}); r.addEventListener('touchend',end); r.addEventListener('touchmove',end); r.addEventListener('mousedown',start); r.addEventListener('mouseup',end); r.addEventListener('mouseleave',end); });
 }
 
-function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function sheet(html){ const s=document.createElement('div'); s.className='sheet'; s.innerHTML=`<div class="box">${html}</div>`; s.addEventListener('click',e=>{ if(e.target===s) s.remove(); }); document.body.appendChild(s); return s; }
+
+function askRemove(id,name){
+  const s=sheet(`<h3>${esc(name)} entfernen?</h3><p>Ihr seht dann gegenseitig eure Schritte nicht mehr.</p><div class="stack"><button class="btn" style="background:var(--red)" id="rm">Entfernen</button><button class="btn sec" id="cx">Abbrechen</button></div>`);
+  s.querySelector('#cx').onclick=()=>s.remove();
+  s.querySelector('#rm').onclick=async()=>{ await rpc('steps_remove_friend',{p_token:me.token,p_friend:id}); s.remove(); toast('Entfernt'); refresh(); };
+}
 
 async function invite(){
-  const url = location.origin+location.pathname+'?g='+encodeURIComponent(me.group_code);
-  const text = `Komm in meine 10.000-Steps-Gruppe! Gruppencode: ${me.group_code}\n${url}`;
-  if(navigator.share){ try{ await navigator.share({title:'10.000 Steps',text}); return; }catch(e){} }
-  copy(text);
+  const url = APP_URL+'?add='+me.id;
+  const text = `Schaffst du heute 10.000 Schritte? Komm zu mir in 10.000 Steps:\n${url}`;
+  if(navigator.share){ try{ await navigator.share({title:'10.000 Steps',text,url}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  const s=sheet(`<h3>Einladungslink</h3><p>Schick den Link per WhatsApp oder iMessage. Wer ihn öffnet, ist direkt mit dir verbunden.</p><div class="code">${url}</div><div class="stack" style="margin-top:14px"><button class="btn" id="cp">Link kopieren</button></div>`);
+  s.querySelector('#cp').onclick=()=>{ copy(url); s.remove(); };
 }
 
-async function manual(){
-  const v = prompt('Wie viele Schritte hast du heute?');
-  if(v==null) return;
-  const n = parseInt(String(v).replace(/\D/g,''),10); if(isNaN(n)) return;
-  try{ await fetch(`${SYNC_URL}?token=${me.token}&steps=${n}`); toast('Gespeichert'); refresh(); }catch(e){ toast('Fehler beim Speichern'); }
+function manual(){
+  const s=sheet(`<h3>Schritte heute</h3><p>Falls der Sync mal hakt.</p><input class="numpad" id="num" inputmode="numeric" pattern="[0-9]*" placeholder="0"><div class="stack" style="margin-top:14px"><button class="btn" id="ok">Speichern</button></div>`);
+  const inp=s.querySelector('#num'); setTimeout(()=>inp.focus(),50);
+  s.querySelector('#ok').onclick=async()=>{ const n=parseInt(inp.value.replace(/\D/g,''),10); if(isNaN(n)) return;
+    try{ await fetch(`${SYNC_URL}?token=${me.token}&steps=${n}`); s.remove(); toast('Gespeichert'); refresh(); }catch(e){ toast('Fehler beim Speichern'); } };
 }
 
+/* ---------- profile ---------- */
+function renderProfile(){
+  view='profile'; draftAvatar=null;
+  app.innerHTML = `
+    <div class="nav"><button id="back">‹ Zurück</button><span></span></div>
+    <h1 style="font-size:28px">Profil</h1>
+    <div class="card">
+      <div class="picker">
+        <label for="file"><div class="big" id="bigAv">${me.avatar?`<img src="${me.avatar}" alt="">`:`<span>${initials(me.name)}</span>`}<div class="cam"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div></div></label>
+        <label for="file">Profilbild ändern</label>
+        <input type="file" id="file" accept="image/*">
+      </div>
+      <div style="border-top:.5px solid var(--sep)"><input type="text" id="name" value="${esc(me.name)}" maxlength="24" placeholder="Dein Name"></div>
+    </div>
+    <div class="stack" style="margin-top:18px">
+      <button class="btn" id="saveBtn">Speichern</button>
+      <button class="btn plain" id="setupBtn">Apple Health / Sync</button>
+      <button class="btn danger" id="logout">Abmelden</button>
+    </div>
+    <p class="hint center">Abmelden löscht nur die Anmeldung auf diesem Gerät.</p>`;
+  $('#back').onclick=()=>{renderHome(); refresh();};
+  $('#setupBtn').onclick=renderSetup;
+  $('#file').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ draftAvatar=await fileToAvatar(f); const cam=$('#bigAv .cam').outerHTML; $('#bigAv').innerHTML=`<img src="${draftAvatar}" alt="">`+cam; }catch(err){ toast(err.message); } };
+  $('#saveBtn').onclick=async()=>{ const b=$('#saveBtn'); b.disabled=true;
+    try{ const r=await rpc('steps_update_profile',{p_token:me.token,p_name:$('#name').value,p_avatar:draftAvatar}); if(r.ok){ me.name=r.name; me.avatar=r.avatar; save(); toast('Gespeichert'); renderHome(); refresh(); } }
+    catch(e){ toast('Fehler: '+e.message); } b.disabled=false; };
+  $('#logout').onclick=()=>{ const s=sheet(`<h3>Abmelden?</h3><p>Deine Daten bleiben erhalten, aber ohne deinen Sync-Schlüssel kommst du nicht mehr an dieses Profil. Kopiere ihn vorher aus den Sync-Einstellungen.</p><div class="stack"><button class="btn" style="background:var(--red)" id="ok">Abmelden</button><button class="btn sec" id="cx">Abbrechen</button></div>`);
+    s.querySelector('#cx').onclick=()=>s.remove(); s.querySelector('#ok').onclick=()=>{ s.remove(); me=null; try{localStorage.removeItem('steps_me')}catch(_){}; renderJoin(); }; };
+}
+
+/* ---------- Apple Health setup ---------- */
 function renderSetup(){
   view='setup';
   const url = `${SYNC_URL}?token=${me.token}&steps=`;
@@ -263,27 +327,25 @@ function renderSetup(){
 
     <div class="section-title">Deine persönliche Sync-Adresse</div>
     <div class="card" style="padding:14px 16px">
-      <div class="code" id="urlbox">${url}</div>
+      <div class="code">${url}</div>
       <button class="btn sec" style="margin-top:12px" id="copyUrl">Adresse kopieren</button>
     </div>
     <p class="hint">Diese Adresse ist dein Schlüssel. Nicht weitergeben.</p>
 
-    <div class="section-title">Kurzbefehl anlegen (ca. 3 Minuten)</div>
+    <div class="section-title">Kurzbefehl anlegen (ca. 2 Minuten)</div>
     <div class="card">
-      <div class="step"><div class="n">1</div><div class="t"><b>Kurzbefehle-App öffnen</b><p>Oben rechts auf <span class="k">+</span> tippen. Oben den Namen auf <span class="k">10.000 Steps</span> ändern.</p></div></div>
-      <div class="step"><div class="n">2</div><div class="t"><b>Aktion „Datum“ hinzufügen</b><p>Suche nach <span class="k">Datum</span>. Es steht automatisch „Aktuelles Datum“.</p></div></div>
-      <div class="step"><div class="n">3</div><div class="t"><b>Aktion „Datum anpassen“ (3×)</b><p>Füge „Datum anpassen“ dreimal hintereinander ein und stelle ein:<br>① <span class="k">Subtrahieren</span> 3 Stunden<br>② <span class="k">Tagesanfang abrufen</span><br>③ <span class="k">Hinzufügen</span> 3 Stunden<br>Das sorgt dafür, dass dein Tag erst um 3 Uhr nachts endet.</p></div></div>
-      <div class="step"><div class="n">4</div><div class="t"><b>Aktion „Gesundheitsdaten suchen“</b><p>Typ: <span class="k">Schritte</span>. Bei „Filter“: <span class="k">Startdatum</span> <span class="k">ist nach</span> → Variable <span class="k">Angepasstes Datum</span> (die letzte). Sortieren: keine. Limit: aus.</p></div></div>
-      <div class="step"><div class="n">5</div><div class="t"><b>Aktion „Statistik berechnen“</b><p><span class="k">Summe</span> von <span class="k">Gesundheitsdaten</span>.</p></div></div>
-      <div class="step"><div class="n">6</div><div class="t"><b>Aktion „Text“</b><p>Füge deine Sync-Adresse von oben ein und direkt dahinter (ohne Leerzeichen) die Variable <span class="k">Statistik</span>.</p></div></div>
-      <div class="step"><div class="n">7</div><div class="t"><b>Aktion „Inhalt der URL abrufen“</b><p>URL: der <span class="k">Text</span> von Schritt 6. Methode: GET. Fertig – oben auf „Fertig“ tippen.</p></div></div>
-      <div class="step"><div class="n">8</div><div class="t"><b>Einmal testen</b><p>Kurzbefehl antippen und ausführen. Beim ersten Mal fragt iOS nach Health-Zugriff → <span class="k">Erlauben</span>. Danach hier unten prüfen.</p></div></div>
+      <div class="step"><div class="n">1</div><div class="t"><b>Kurzbefehle-App öffnen</b><p>Oben rechts auf <span class="k">+</span>. Name oben auf <span class="k">10.000 Steps</span> ändern.</p></div></div>
+      <div class="step"><div class="n">2</div><div class="t"><b>Aktion „Gesundheitsdaten suchen“</b><p>Typ: <span class="k">Schritte</span>. Filter hinzufügen: <span class="k">Startdatum</span> <span class="k">ist heute</span>. Sortieren: keine. Limit: aus.</p></div></div>
+      <div class="step"><div class="n">3</div><div class="t"><b>Aktion „Statistik berechnen“</b><p><span class="k">Summe</span> von <span class="k">Gesundheitsdaten</span>.</p></div></div>
+      <div class="step"><div class="n">4</div><div class="t"><b>Aktion „Text“</b><p>Deine Sync-Adresse von oben einfügen und direkt dahinter (ohne Leerzeichen) die Variable <span class="k">Statistik</span>.</p></div></div>
+      <div class="step"><div class="n">5</div><div class="t"><b>Aktion „Inhalt der URL abrufen“</b><p>URL: der <span class="k">Text</span> aus Schritt 4. Methode: GET. Oben auf „Fertig“.</p></div></div>
+      <div class="step"><div class="n">6</div><div class="t"><b>Einmal ausführen</b><p>Beim ersten Mal fragt iOS nach Health-Zugriff → <span class="k">Erlauben</span>. Dann unten auf „Jetzt prüfen“.</p></div></div>
     </div>
 
     <div class="section-title">Automatisch laufen lassen</div>
     <div class="card">
-      <div class="step"><div class="n">9</div><div class="t"><b>Automation anlegen</b><p>In Kurzbefehle unten auf <span class="k">Automation</span> → <span class="k">+</span>. Trigger auswählen, dann <span class="k">Sofort ausführen</span> und „Bei Ausführung benachrichtigen“ <b>aus</b>. Als Aktion den Kurzbefehl „10.000 Steps“ wählen.</p></div></div>
-      <div class="step"><div class="n">10</div><div class="t"><b>Empfohlene Trigger</b><p>Lege am besten drei Automationen an:<br>• <span class="k">App</span> → WhatsApp, Instagram, Safari „ist geöffnet“ (läuft dann quasi ständig)<br>• <span class="k">Ladegerät</span> → wird angeschlossen<br>• <span class="k">Tageszeit</span> → 21:00, täglich (Sicherheitsnetz)</p></div></div>
+      <div class="step"><div class="n">7</div><div class="t"><b>Automation anlegen</b><p>Unten <span class="k">Automation</span> → <span class="k">+</span> → Trigger wählen → <span class="k">Sofort ausführen</span>, „Bei Ausführung benachrichtigen“ <b>aus</b> → Kurzbefehl „10.000 Steps“ auswählen.</p></div></div>
+      <div class="step"><div class="n">8</div><div class="t"><b>Empfohlene Trigger</b><p>Am besten drei Automationen:<br>• <span class="k">App</span> → WhatsApp, Instagram, Safari „ist geöffnet“<br>• <span class="k">Ladegerät</span> → wird angeschlossen<br>• <span class="k">Tageszeit</span> → 21:00, täglich</p></div></div>
     </div>
 
     <div class="section-title">Status</div>
@@ -297,24 +359,30 @@ function renderSetup(){
   $('#checkBtn').onclick=checkSync;
   checkSync();
 }
-
 async function checkSync(){
   const el=$('#syncstatus'); if(!el) return;
   try{
-    const d = await rpc('steps_dashboard',{p_group_code:me.group_code});
-    const my = d.find(x=>x.id===me.id);
+    const d = await rpc('steps_dash',{p_token:me.token}); const my = d.find(x=>x.is_me);
     if(!my||!my.updated_at) el.innerHTML='<span class="chip warn">Noch kein Sync angekommen</span><p class="hint" style="margin:10px 0 0">Führe den Kurzbefehl einmal aus und tippe dann auf „Jetzt prüfen“.</p>';
     else el.innerHTML=`<span class="chip ok">✓ Letzter Sync ${ago(my.updated_at)}</span><p class="hint" style="margin:10px 0 0">${fmt(my.steps)} Schritte heute angekommen. Alles läuft.</p>`;
   }catch(e){ el.textContent='Verbindung fehlgeschlagen'; }
 }
 
 /* ---------- boot ---------- */
-load();
-const params = new URLSearchParams(location.search);
-if(me){ renderHome(); refresh(); }
-else renderJoin(params.get('g')||'');
-timer = setInterval(refresh, 60000);
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) refresh(); });
+(async function boot(){
+  load();
+  const addId = new URLSearchParams(location.search).get('add');
+  if(addId){
+    try{ pendingFriend = await rpc('steps_peek',{p_user:addId}); }catch(e){}
+    if(me && pendingFriend && pendingFriend.id!==me.id){
+      try{ const r=await rpc('steps_add_friend',{p_token:me.token,p_friend:pendingFriend.id}); if(r.ok) toast(`Mit ${r.name} verbunden`); }catch(e){}
+      pendingFriend=null; history.replaceState(null,'',APP_URL);
+    }
+  }
+  if(me){ renderHome(); refresh(); } else renderJoin();
+  setInterval(refresh, 60000);
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) refresh(); });
+})();
 </script>
 </body>
 </html>
